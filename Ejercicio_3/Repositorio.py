@@ -1,11 +1,7 @@
 from abc import ABC, abstractmethod
 
 # Aqui hacemos la interfaz del repositorio y debe ser abtracta para implementar los metodos luego
-
 class IRepositorio(ABC): 
-    def __init__(self, nombre_archivo="biblioteca.txt"):
-        self.archivo = nombre_archivo
-    
     @abstractmethod
     def guardar_en_archivo(self, libros, prestamos):
         pass
@@ -15,10 +11,9 @@ class IRepositorio(ABC):
         pass
 
 # Extendemos de RepositorioArchivo lo cual nos obliga a implementar las clases lo cual nos deja implementar la logica que estaba desde un principio
-
 class RepositorioBiblioteca(IRepositorio): 
     def __init__(self, nombre_archivo="biblioteca.txt"):
-        super().__init__()
+        self.archivo = nombre_archivo
     
     def guardar_en_archivo(self, libros, prestamos):
         with open(self.archivo, 'w') as f:
