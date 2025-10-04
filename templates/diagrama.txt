@@ -1,0 +1,88 @@
+@startuml
+class Libro {
+  + id : int
+  + titulo : str
+  + autor : str
+  + isbn : str
+  + disponible : bool = True
+  + Libro(id, titulo, autor, isbn, disponible)
+}
+
+class Prestamo {
+  + id : int
+  + libro_id : int
+  + usuario : str
+  + fecha : date
+  + devuelto : bool = False
+  + Prestamo(id, libro_id, usuario, fecha)
+}
+
+abstract class Busqueda {
+    + {abstract} buscar(valor: str, libros: list)
+}
+
+class BusquedaTitulo {
+    + buscar(valor: str, libros: list) : list<Libro>
+}
+
+class BusquedaAuthor {
+    + buscar(valor: str, libros: list) : list<Libro>
+}
+
+class BusquedaISBN {
+    + buscar(valor: str, libros: list) : list<Libro>
+}
+
+class BusquedaDisponibilidad {
+    + buscar(valor: str, libros: list) : list<Libro>
+}
+
+abstract class IRepositorio {
+  + IRepositorio(nombre_archivo)
+  + {abstract} guardar_en_archivo(libros, prestamos)
+  + {abstract} cargar_desde_archivo()
+}
+
+class RepositorioBiblioteca {
+  + guardar_en_archivo(libros, prestamos)
+  + cargar_desde_archivo() : bool
+}
+
+class ValidadorBiblioteca {
+  + validar_libro(titulo: str, autor: str, isbn: str) : str | None
+  + validar_usuario(usuario: str) : str | None
+}
+
+class ServicioNotificaciones {
+  + enviar_notificacion(usuario, libro)
+}
+
+class SistemaBiblioteca {
+  - libros : list<Libro>
+  - prestamos : list<Prestamo>
+  - validador : ValidadorBiblioteca
+  - repositorio : RepositorioBiblioteca
+  - notificador : ServicioNotificaciones
+  + agregar_libro(titulo, autor, isbn)
+  + buscar_libro(estrategia: Busqueda, valor: str) : list<Libro>
+  + realizar_prestamo(libro_id, usuario)
+  + devolver_libro(prestamo_id)
+}
+
+IRepositorio <|.. RepositorioBiblioteca : <<implementa>>
+
+Busqueda <|.. BusquedaTitulo : implementa
+Busqueda <|.. BusquedaAuthor : implementa
+Busqueda <|.. BusquedaISBN : implementa
+Busqueda <|.. BusquedaDisponibilidad : implementa
+
+SistemaBiblioteca o-- Libro : contiene
+SistemaBiblioteca o-- Prestamo : contiene
+
+SistemaBiblioteca --> BusquedaAuthor: usa
+SistemaBiblioteca --> ValidadorBiblioteca : usa
+SistemaBiblioteca --> ServicioNotificaciones : usa
+SistemaBiblioteca --> RepositorioBiblioteca : usa
+
+Prestamo --> Libro : referenciado
+@enduml
