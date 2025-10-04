@@ -1,3 +1,5 @@
+# Esta clase nos ayuda a validar todos los objetos que hay quye validar
+
 class ValidadorBiblioteca:
     def validar_libro(self, titulo, autor, isbn):
         if not titulo or len(titulo) < 2:

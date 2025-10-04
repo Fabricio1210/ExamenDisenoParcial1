@@ -1,6 +1,8 @@
 from abc import ABC, abstractmethod
 
-class RepositorioArchivo(ABC): 
+# Aqui hacemos la interfaz del repositorio y debe ser abtracta para implementar los metodos luego
+
+class IRepositorio(ABC): 
     def __init__(self, nombre_archivo="biblioteca.txt"):
         self.archivo = nombre_archivo
     
@@ -12,7 +14,9 @@ class RepositorioArchivo(ABC):
     def cargar_desde_archivo(self):
         pass
 
-class RepositorioBiblioteca(RepositorioArchivo): 
+# Extendemos de RepositorioArchivo lo cual nos obliga a implementar las clases lo cual nos deja implementar la logica que estaba desde un principio
+
+class RepositorioBiblioteca(IRepositorio): 
     def __init__(self, nombre_archivo="biblioteca.txt"):
         super().__init__()
     

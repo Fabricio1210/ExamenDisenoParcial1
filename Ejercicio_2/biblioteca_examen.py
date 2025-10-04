@@ -2,6 +2,7 @@ from Validador import ValidadorBiblioteca
 from Repositorio import RepositorioBiblioteca
 from Notificacion import ServicioNotificaciones
 from datetime import datetime
+# Importamos las clases necesarias
 
 class Libro:
     def __init__(self, id, titulo, autor, isbn, disponible=True):
@@ -32,15 +33,18 @@ class SistemaBiblioteca:
         self.validador = ValidadorBiblioteca()
         self.repositorio = RepositorioBiblioteca()
         self.notificador = ServicioNotificaciones()
+        # Creamos los objetos de los tres tipos que tenemos
     
     def agregar_libro(self, titulo, autor, isbn):
         error = self.validador.validar_libro(titulo, autor, isbn)
+        # Mandamos a llamar la respuesta para validar libro con el objeto del validador
         if error:
             return error
         libro = Libro(self.contador_libro, titulo, autor, isbn)
         self.libros.append(libro)
         self.contador_libro += 1
         self.repositorio.guardar_en_archivo(self.libros, self.prestamos)
+        # Guardamos los cambios en el archivo usando la clase de persistencia
         
         return f"Libro '{titulo}' agregado exitosamente"
     
@@ -72,6 +76,7 @@ class SistemaBiblioteca:
     
     def realizar_prestamo(self, libro_id, usuario):
         error = self.validador.validar_usuario(usuario)
+        # Validamos la clase con su respectivo objeto validador
         if error:
             return error
         
@@ -98,14 +103,13 @@ class SistemaBiblioteca:
         self.contador_prestamo += 1
         libro.disponible = False
         
+        # Mandamos a llamar la funcion para guardar archivo de se respectiva clase de persistencia
         self.repositorio.guardar_en_archivo(self.libros, self.prestamos)
+        # Mandamos a llamar la funcion para enviar lo notificcion de su respectiva clase
         self.notificador.enviar_notificacion(usuario, libro.titulo)
         return f"Préstamo realizado a {usuario}"
     
     def devolver_libro(self, prestamo_id):
-        """
-        Refactorizado: usa RepositorioBiblioteca
-        """
         prestamo = None
         for p in self.prestamos:
             if p.id == prestamo_id:
@@ -129,15 +133,12 @@ class SistemaBiblioteca:
         return "Libro devuelto exitosamente"
     
     def obtener_todos_libros(self):
-        """Sin cambios - lógica de negocio"""
         return self.libros
     
     def obtener_libros_disponibles(self):
-        """Sin cambios - lógica de negocio"""
         return [libro for libro in self.libros if libro.disponible]
     
     def obtener_prestamos_activos(self):
-        """Sin cambios - lógica de negocio"""
         return [p for p in self.prestamos if not p.devuelto]
 
 # VIOLACIÓN DIP: Dependencia directa de implementación

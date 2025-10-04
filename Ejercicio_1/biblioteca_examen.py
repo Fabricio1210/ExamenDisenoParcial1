@@ -1,4 +1,5 @@
 import Ejercicio1
+# Importamos todo el archivo de las clases
 
 class Libro:
     def __init__(self, id, titulo, autor, isbn, disponible=True):
@@ -49,7 +50,9 @@ class SistemaBiblioteca:
     
     # VIOLACIÓN OCP: Método cerrado a extensión
     def buscar_libro(self, Busqueda, valor):
+        # Aqui recibimos como parametro un objeto de tipo Busqueda
         resultados = Busqueda.buscar(valor,self.libros)
+        # Y usamos el metodo necesario
         return resultados
     
     # VIOLACIÓN SRP: Mezcla validación + lógica + persistencia
@@ -155,6 +158,7 @@ def main():
     
     print("\n=== BÚSQUEDA POR AUTOR ===")
     resultados = sistema.buscar_libro(objetoabuscar,"Gabriel García Márquez")
+    # Buscamos al autor con su nombre completo para que haga match y funcione
     for libro in resultados:
         print(f"- {libro.titulo} por {libro.autor}")
     

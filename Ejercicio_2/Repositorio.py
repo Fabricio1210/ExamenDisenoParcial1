@@ -1,3 +1,5 @@
+# Esta es la clase que tendra todo lo que tenga que ver con la persistencia de datos con el programa
+
 class RepositorioBiblioteca: 
     def __init__(self, nombre_archivo="biblioteca.txt"):
         self.archivo = nombre_archivo
